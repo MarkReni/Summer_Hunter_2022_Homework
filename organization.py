@@ -3,9 +3,10 @@ from datetime import datetime, timedelta
 from typing import List
 
 import pandas as pd
+import random  # imported random also here
 
 from config import TABLE_COLUMNS
-from user import DummyUser, User
+from user import DummyUser, User, EmotionalOlderUser, EmotionalYoungerUser, LogicalOlderUser, LogicalYoungerUser
 
 
 class Organization:
@@ -16,6 +17,9 @@ class Organization:
         self.n_users = n_users
         self.n_simulations = n_simulations
         self.training_interval_days = training_interval_days
+        #### added this just for convenience ####
+        self.created_types = [EmotionalYoungerUser, EmotionalOlderUser, LogicalYoungerUser, LogicalOlderUser]
+        ####
         self.users = self._populate_organization()
         assert all(
             issubclass(type(user), User) for user in self.users
@@ -28,7 +32,8 @@ class Organization:
         # 3. change the distribution from uniform to something a bit more realistic
         users = []
         for i in range(self.n_users):
-            users.append(DummyUser())
+            selected_user = random.choices(self.created_types, weights=[25, 10, 45, 20], k=1)[0]
+            users.append(selected_user)
         return users
 
     def do_training(self) -> None:
