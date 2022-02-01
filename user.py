@@ -25,7 +25,7 @@ class User(metaclass=ABCMeta):
         self.history: List[Optional[SimulationResult]] = []
 
     @abstractmethod
-    def _get_simulation_outcome() -> str:
+    def _get_simulation_outcome(self) -> str:
         """Implement this method in your own subclass.
 
         It should always return one of the possible SIMULATION_OUTCOMES
@@ -36,7 +36,7 @@ class User(metaclass=ABCMeta):
         """Complete a simulation and store it in the user's history."""
         outcome = self._get_simulation_outcome()
         assert (
-            outcome in SIMULATION_OUTCOMES
+                outcome in SIMULATION_OUTCOMES
         ), "The outcome from your logic is not a valid simulation outcome."
 
         self.history.append(
@@ -81,3 +81,47 @@ class DummyUser(User):
         # In your solution, tweak this logic to mimick your chosen user types instead
         # of picking a random simulation outcome
         return random.choice(SIMULATION_OUTCOMES)
+
+
+# Users are classified by their age and by their emotional/logical brain dominance
+
+class LogicalYoungerUser(User):
+    def __init__(self) -> None:
+        super(LogicalYoungerUser, self).__init__(type="Logical and younger")
+
+    def _get_simulation_outcome(self) -> str:
+        results = random.choices(SIMULATION_OUTCOMES, weights=[70, 25, 5], k=10)
+
+        return random.choice(results)
+
+
+class LogicalOlderUser(User):
+    def __init__(self) -> None:
+        super(LogicalOlderUser, self).__init__(type="Logical and older")
+
+    def _get_simulation_outcome(self) -> str:
+        results = random.choices(SIMULATION_OUTCOMES, weights=[45, 40, 15], k=10)
+
+        return random.choice(results)
+
+
+class EmotionalYoungerUser(User):
+    def __init__(self) -> None:
+        super(EmotionalYoungerUser, self).__init__(type="Emotional and younger")
+
+    def _get_simulation_outcome(self) -> str:
+        results = random.choices(SIMULATION_OUTCOMES, weights=[50, 30, 20], k=10)
+
+        return random.choice(results)
+
+
+class EmotionalOlderUser(User):
+    def __init__(self) -> None:
+        super(EmotionalOlderUser, self).__init__(type="Emotional and older")
+
+    def _get_simulation_outcome(self) -> str:
+        results = random.choices(SIMULATION_OUTCOMES, weights=[30, 35, 35], k=10)
+
+        return random.choice(results)
+
+
