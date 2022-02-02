@@ -45,12 +45,26 @@ def get_data_with_query() -> pd.DataFrame:
         group_by=["user_id"],
         order_by=["fails DESC"],
     )
+
+    query_params2 = QueryParams(
+        dimensions=[
+            "user_id",
+            "name",
+            "outcome",
+            "type",
+            "COUNT(outcome) AS outcome_count",
+        ],
+        table=DEFAULT_TABLE,
+        group_by=["user_id", "outcome"],
+        order_by=["name"],
+    )
+
     # The function call above will result in the following query:
     # SELECT user_id, name, type, COUNT(CASE WHEN outcome = 'FAIL' THEN 1 END) AS fails
     # FROM training_result
     # GROUP BY user_id
     # ORDER BY fails DESC
-    return query_db_to_df(query_params, result_columns=["user_id", "name", "type", "fails"])
+    return query_db_to_df(query_params2, result_columns=["user_id", "name", "outcome", "type", "outcome_count"])
 
 
 def main() -> None:

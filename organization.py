@@ -18,8 +18,7 @@ class Organization:
         self.n_simulations = n_simulations
         self.training_interval_days = training_interval_days
         #### added this just for convenience ####
-        self.created_types = [EmotionalYoungerUser, EmotionalOlderUser, LogicalYoungerUser, LogicalOlderUser]
-        ####
+        self.created_types = [EmotionalYoungerUser(), EmotionalOlderUser(), LogicalYoungerUser(), LogicalOlderUser()]
         self.users = self._populate_organization()
         assert all(
             issubclass(type(user), User) for user in self.users
